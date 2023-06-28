@@ -11,5 +11,4 @@ public class UserController {
     public String authServer() {
         return  "server ok";
     }
-
 }
