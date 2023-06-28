@@ -1,24 +1,18 @@
 package com.hackathon.herb.parser;
+
 import com.hackathon.herb.dto.WeatherInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
-/** 날씨를 4시간 간격으로 가져온다.
- - API 요청마다 무거운 로직을 접근하지 않도록 Memo
- - 두 시간 간격이 4시간 이상 차이날 때 API 호출을 통해 weather 값 갱신
- */
+@Slf4j
 @Component
 public class WeatherAPIParser {
-    private LocalTime lastCallTime;
-    private String weather;
-
     private String call() {
         final String url = "http://api.weatherapi.com/v1/forecast.json";
         final String key = "fb9a3d940471413a88f102715230601";
@@ -75,8 +69,7 @@ public class WeatherAPIParser {
                         .uv(uv)
                         .build();
 
-                weather = curWeather;
-                System.out.println(dto);
+                log.info("dto : {}", dto);
             }
 
         } catch (ParseException e) {
@@ -87,18 +80,6 @@ public class WeatherAPIParser {
     }
 
     public WeatherInfo getCurrentWeather() {
-        if (lastCallTime == null) lastCallTime = LocalTime.now();
-        int lastCallHour = lastCallTime.getHour();
-        WeatherInfo dto = null;
-
-        LocalTime curCallTime = LocalTime.now();
-        int curCallHour = curCallTime.getHour();
-
-        if (weather == null || curCallHour - lastCallHour >= 4) {
-            dto = parsing();
-            lastCallTime = curCallTime;
-        }
-
-        return dto;
+        return parsing();
     }
 }
