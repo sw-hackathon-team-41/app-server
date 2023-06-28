@@ -4,12 +4,15 @@ import com.hackathon.herb.dto.article.ArticleCreationDto;
 import com.hackathon.herb.dto.article.ArticleDeletionDto;
 import com.hackathon.herb.dto.article.ArticleUpdateDto;
 import com.hackathon.herb.entity.ArticleEntity;
+import com.hackathon.herb.entity.UserEntity;
 import com.hackathon.herb.repository.ArticleRepository;
 import com.hackathon.herb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +22,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     public Long createArticle(ArticleCreationDto.Req req) {
-        String uId = req.getUserId();
+        Long uId = req.getUserId();
 
         if (!userRepository.existsById(uId)) {
             throw new IllegalArgumentException("존재하지 않는 유저");
@@ -31,25 +34,30 @@ public class ArticleService {
         return 1L;
     }
 
-    public Long uploadImage(String uId, String articleId, MultipartFile file) {
-        if (!userRepository.existsById(uId)) {
-            throw new IllegalArgumentException("존재하지 않는 유저");
-        }
+    public Long uploadImage(Long uId, Long articleId, MultipartFile file) {
+        UserEntity user = userRepository.findById(uId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
 
         ArticleEntity article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글"));
+
+        if (!Objects.equals(article.getWriter(), user.getId())) {
+            return 0L;
+        }
 
         article.updateThumbnail(file);
         return 1L;
     }
 
     public Long deleteArticle(ArticleDeletionDto.Req dto) {
-        if (!userRepository.existsById(dto.getUId())) {
-            throw new IllegalArgumentException("존재하지 않는 유저");
-        }
+        UserEntity user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
 
-        if (!articleRepository.existsById(dto.getArticleId())) {
-            throw new IllegalArgumentException("존재하지 않는 게시글");
+        ArticleEntity article = articleRepository.findById(dto.getArticleId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글"));
+
+        if (!Objects.equals(user.getId(), article.getWriter())) {
+            return 0L;
         }
 
         articleRepository.deleteById(dto.getArticleId());
@@ -57,24 +65,30 @@ public class ArticleService {
     }
 
     public Long updateTitle(ArticleUpdateDto.titleReq dto) {
-        if (!userRepository.existsById(dto.getUId())) {
-            throw new IllegalArgumentException("존재하지 않는 유저");
-        }
+        UserEntity user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
 
         ArticleEntity article = articleRepository.findById(dto.getArticleId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글"));
+
+        if (!Objects.equals(user.getId(), article.getWriter())) {
+            return 0L;
+        }
 
         article.updateTitle(dto.getTitle());
         return 1L;
     }
 
     public Long updateContent(ArticleUpdateDto.contentReq dto) {
-        if (!userRepository.existsById(dto.getUId())) {
-            throw new IllegalArgumentException("존재하지 않는 유저");
-        }
+        UserEntity user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
 
         ArticleEntity article = articleRepository.findById(dto.getArticleId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글"));
+
+        if (!Objects.equals(user.getId(), article.getWriter())) {
+            return 0L;
+        }
 
         article.updateContent(dto.getContent());
         return 1L;

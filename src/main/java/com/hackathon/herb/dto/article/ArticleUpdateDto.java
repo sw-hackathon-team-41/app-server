@@ -8,16 +8,16 @@ public class ArticleUpdateDto {
     @Getter @Setter
     @AllArgsConstructor
     public static class titleReq {
-        private String uId;
-        private String articleId;
+        private Long userId;
+        private Long articleId;
         private String title;
     }
 
     @Getter @Setter
     @AllArgsConstructor
     public static class contentReq {
-        private String uId;
-        private String articleId;
+        private Long userId;
+        private Long articleId;
         private String content;
     }
 }

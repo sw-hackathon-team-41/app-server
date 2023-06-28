@@ -5,7 +5,7 @@ spring:
       path: /h2-console
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp://127.0.1.1:8082/~/test
+    url: jdbc:h2:tcp://localhost/~/test
     username: sa
     password:
 
@@ -19,5 +19,7 @@ spring:
 
     open-in-view: false
     show-sql: true
+    defer-datasource-initialization: true
 
+  sql.init.mode: always
 

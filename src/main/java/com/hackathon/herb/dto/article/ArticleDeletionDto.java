@@ -8,7 +8,7 @@ public class ArticleDeletionDto {
     @Getter @Setter
     @AllArgsConstructor
     public static class Req {
-        private String uId;
-        private String articleId;
+        private Long userId;
+        private Long articleId;
     }
 }

@@ -22,8 +22,8 @@ public class ArticleController {
 
     @PostMapping("/image-upload")
     public ResponseEntity<Long> uploadImage(
-            @RequestParam("userId") String uId,
-            @RequestParam("articleId") String articleId,
+            @RequestParam("userId") Long uId,
+            @RequestParam("articleId") Long articleId,
             @RequestParam("thumbnail") MultipartFile file
     ) {
         return ResponseEntity.ok(articleService.uploadImage(uId, articleId, file));

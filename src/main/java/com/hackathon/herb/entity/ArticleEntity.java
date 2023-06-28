@@ -1,39 +1,29 @@
 package com.hackathon.herb.entity;
 
 import jakarta.persistence.*;
-import jdk.jfr.Relational;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import com.hackathon.herb.entity.UserEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Builder
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Data
 @Entity
 @Table(name = "Articles")
 public class ArticleEntity {
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    private String id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String title; // 제목
 
-    @Column(nullable = false)
     private byte[] thumbnail; // 썸네일
-
     private String content; // 내용
-    private String writer; // 작성자
+    private Long writer; // 작성자
     private Integer likes;
 
     @CreatedDate
