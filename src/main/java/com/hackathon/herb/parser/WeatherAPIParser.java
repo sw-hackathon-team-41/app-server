@@ -53,7 +53,6 @@ public class WeatherAPIParser {
             Object result = jsonParser.parse(jsonStr);
 
             if (result instanceof JSONObject jsonObject) {
-                JSONObject location = (JSONObject) jsonObject.get("location");
                 JSONObject current = (JSONObject) jsonObject.get("current");
                 JSONObject condition = (JSONObject) current.get("condition");
 
@@ -62,20 +61,21 @@ public class WeatherAPIParser {
 
                 if (icon.startsWith("//")) icon = icon.substring(2);
 
-                String region = location.get("name").toString();
                 LocalDateTime time = LocalDateTime.now();
                 float temperature = Float.parseFloat(current.get("temp_c").toString());
+                float humidity = Float.parseFloat(current.get("humidity").toString());
+                float uv = Float.parseFloat(current.get("uv").toString());
 
                 dto = WeatherInfo.builder()
                         .weather(curWeather)
                         .icon(icon)
-                        .region(region)
                         .time(time)
                         .temperature(temperature)
+                        .humidity(humidity)
+                        .uv(uv)
                         .build();
 
                 weather = curWeather;
-
                 System.out.println(dto);
             }
 

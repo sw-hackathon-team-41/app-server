@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     private final WeatherAPIParser parser;
 
-    @GetMapping("/get-weather")
+    @GetMapping
     public ResponseEntity<WeatherInfo> test() {
         WeatherInfo dto = parser.getCurrentWeather();
         return ResponseEntity.ok(dto);

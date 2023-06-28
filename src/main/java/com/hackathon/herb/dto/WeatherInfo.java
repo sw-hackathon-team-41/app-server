@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 public class WeatherInfo {
     private String weather;
     private String icon;
-    private String region;
     private LocalDateTime time;
     private float temperature;
+    private float humidity;
+    private float uv;
 }
