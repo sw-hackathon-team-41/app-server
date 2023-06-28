@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import com.hackathon.herb.entity.UserEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Builder
@@ -26,12 +28,22 @@ public class ArticleEntity {
 
     @Column(nullable = false)
     private String title; // 제목
+
     @Column(nullable = false)
     private byte[] thumbnail; // 썸네일
 
     private String content; // 내용
     private String writer; // 작성자
+    private Integer likes;
 
     @CreatedDate
-    private LocalDateTime createdDt; //작성 날짜
+    private LocalDateTime createdAt; //작성 날짜
+
+    public void updateThumbnail(MultipartFile file) {
+        try {
+            this.thumbnail = file.getBytes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

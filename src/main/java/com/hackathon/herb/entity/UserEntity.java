@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -26,10 +27,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String password; // 패스워드.
 
-    private List<String> followings; // 팔로잉 목록
-    private List<String> followers; // 팔로워 목록
-
-    private List<String> plant_name; // 반려식물 이름 목록
+    private List<String> followings = new ArrayList<>(); // 팔로잉 목록
+    private List<String> followers = new ArrayList<>(); // 팔로워 목록
+    private List<String> plant_name = new ArrayList<>(); // 반려식물 이름 목록
 
     private String country; //위치정보(나라)
 

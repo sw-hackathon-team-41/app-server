@@ -1,4 +1,7 @@
 package com.hackathon.herb.repository;
 
-public class ArticleRepository {
+import com.hackathon.herb.entity.ArticleEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ArticleRepository extends JpaRepository<ArticleEntity, String> {
 }
