@@ -16,6 +16,7 @@ public class FollowService {
     @Autowired
     private UserRepository userRepository;
 
+
     //팔로우 여부 확인
     public boolean isFollowing(Long senderId, Long recipientId){
         //1. db에 존재하는지 확인
