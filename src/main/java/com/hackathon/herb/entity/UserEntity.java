@@ -1,10 +1,7 @@
 package com.hackathon.herb.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
@@ -12,6 +9,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter @Setter
 @Data
 @Entity
 @Table(name = "Users")
@@ -19,7 +17,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id;
+    private long id;
 
     @Column(nullable = false)
     private String email; // 이메일(아이디 개념)
@@ -28,6 +26,8 @@ public class UserEntity {
 
     private List<String> followings; // 팔로잉 목록
     private List<String> followers; // 팔로워 목록
+    private long followingCnt = followings.size(); //팔로잉 수
+    private long followerCnt = followers.size(); //팔로워 수
 
     private List<String> plant_name; // 반려식물 이름 목록
 
