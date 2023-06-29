@@ -9,10 +9,13 @@ import com.hackathon.herb.entity.UserEntity;
 import com.hackathon.herb.repository.ArticleRepository;
 import com.hackathon.herb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -104,5 +107,28 @@ public class ArticleService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않음"));
 
         return ArticleInfo.of(writer, article);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ArticleInfo> getArticleList(Long userId, Pageable pageable) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않음"));
+
+        List<Long> followings = user.getFollowings();
+        List<ArticleInfo> infos = new ArrayList<>();
+
+        for (Long following : followings) {
+            UserEntity followUser = userRepository.findById(following)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않음"));
+
+            List<ArticleEntity> articles = followUser.getArticles();
+
+            for (ArticleEntity article : articles) {
+                ArticleInfo of = ArticleInfo.of(followUser, article);
+                infos.add(of);
+            }
+        }
+
+        return infos;
     }
 }
