@@ -2,10 +2,12 @@ package com.hackathon.herb.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
@@ -21,9 +23,8 @@ public class UserEntity {
 
     private List<Long> followings; // 팔로잉 목록
     private List<Long> followers; // 팔로워 목록
-    private long followingCnt = followings.size(); //팔로잉 수
-    private long followerCnt = followers.size(); //팔로워 수
-    private List<String> myHerbList; // 반려식물 이름 목록
+    private long followingCnt; //팔로잉 수
+    private long followerCnt; //팔로워 수
     private String country; //위치정보(나라)
 
     private enum mention {}; //날씨와 식물종류에 따라 달라지는 배너 멘트
