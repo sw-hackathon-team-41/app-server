@@ -23,6 +23,8 @@ public class ArticleCreationDto {
                     .build();
 
             if (this.photo != null) entity.updateThumbnail(photo);
+            if (entity.getCreatedAt() == null) entity.updateCreatedAt();
+
             return entity;
         }
     }

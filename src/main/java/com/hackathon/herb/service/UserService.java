@@ -1,5 +1,6 @@
 package com.hackathon.herb.service;
 
+import com.hackathon.herb.dto.user.UserDetailInfo;
 import com.hackathon.herb.dto.user.UserSignInDto;
 import com.hackathon.herb.dto.user.UserSignUpDto;
 import com.hackathon.herb.entity.UserEntity;
@@ -7,6 +8,7 @@ import com.hackathon.herb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -23,15 +25,21 @@ public class UserService {
                 .build()
         );
 
-        userRepository.saveAndFlush(user);
-
-        return 1L;
+        UserEntity userEntity = userRepository.saveAndFlush(user);
+        return userEntity.getId();
     }
 
     public Long signIn(UserSignInDto.Req dto) {
-         userRepository.findByEmailAndPassword(dto.getEmail(), dto.getPassword())
+        UserEntity userEntity = userRepository.findByEmailAndPassword(dto.getEmail(), dto.getPassword())
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없음"));
 
-         return 1L;
+        return userEntity.getId();
+    }
+
+    public UserDetailInfo getUserInfo(Long userId) {
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없음"));
+
+        return UserDetailInfo.of(userEntity);
     }
 }

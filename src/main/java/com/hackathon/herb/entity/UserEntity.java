@@ -29,6 +29,17 @@ public class UserEntity {
     private long followingCnt; //팔로잉 수
     private long followerCnt; //팔로워 수
 
+    @ManyToMany(mappedBy = "usersWhoLikeThis", fetch = FetchType.EAGER)
+    private List<ArticleEntity> likeArticles;
+
+    @OneToMany(mappedBy = "userEntity")
+    private List<ArticleEntity> articles;
+
+    public void updateArticle(ArticleEntity article) {
+        this.articles.add(article);
+        article.setUserEntity(this);
+    }
+  
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -41,14 +52,4 @@ public class UserEntity {
     public int hashCode() {
         return Objects.hash(email, password);
     }
-//    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
-//    private List<Herb> herbs;
-
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "usersWhoLikeThis")
-    private List<ArticleEntity> articles;
-
-//    public void updateHerb(Herb herb) {
-//        this.herbs.add(herb);
-//        herb.setUserInfo(this);
-//    }
 }

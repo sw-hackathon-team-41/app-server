@@ -7,14 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.time.LocalDateTime;
 
 @Builder
 @Getter @Setter
 @AllArgsConstructor
 public class ArticleInfo {
+    private Long articleId;
     private String title;
     private String content;
     private byte[] thumbnail;
@@ -24,6 +23,7 @@ public class ArticleInfo {
 
     public static ArticleInfo of(UserEntity user, ArticleEntity article) {
         return ArticleInfo.builder()
+                .articleId(article.getId())
                 .title(article.getTitle())
                 .content(article.getContent())
                 .thumbnail(article.getThumbnail())

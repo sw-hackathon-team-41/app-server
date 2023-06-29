@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("article")
@@ -24,11 +25,11 @@ public class ArticleController {
 
     @PostMapping("/image-upload")
     public ResponseEntity<Long> uploadImage(
-            @RequestParam("userId") Long uId,
-            @RequestParam("articleId") Long articleId,
-            @RequestParam("thumbnail") MultipartFile file
+            @RequestParam(value = "thumbnail", required = false) MultipartFile file,
+            @RequestParam("userId") Long userId,
+            @RequestParam("articleId") Long articleId
     ) {
-        return ResponseEntity.ok(articleService.uploadImage(uId, articleId, file));
+        return ResponseEntity.ok(articleService.uploadImage(userId, articleId, file));
     }
 
     @DeleteMapping

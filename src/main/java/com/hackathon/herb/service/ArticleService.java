@@ -1,14 +1,12 @@
 package com.hackathon.herb.service;
 
-import com.hackathon.herb.dto.article.ArticleCreationDto;
-import com.hackathon.herb.dto.article.ArticleDeletionDto;
-import com.hackathon.herb.dto.article.ArticleInfo;
-import com.hackathon.herb.dto.article.ArticleUpdateDto;
+import com.hackathon.herb.dto.article.*;
 import com.hackathon.herb.entity.ArticleEntity;
 import com.hackathon.herb.entity.UserEntity;
 import com.hackathon.herb.repository.ArticleRepository;
 import com.hackathon.herb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -27,16 +25,10 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     public Long createArticle(ArticleCreationDto.Req req) {
-        Long uId = req.getUserId();
-
-        if (!userRepository.existsById(uId)) {
-            throw new IllegalArgumentException("존재하지 않는 유저");
-        }
-
-        ArticleEntity entity = req.toEntity();
-        articleRepository.save(entity);
-
-        return 1L;
+        UserEntity user = userRepository.findById(req.getUserId()).orElseThrow(() -> new IllegalArgumentException("찾을 수 없는 유저"));
+        ArticleEntity article = req.toEntity();
+        user.updateArticle(article);
+        return articleRepository.save(article).getId();
     }
 
     public Long uploadImage(Long uId, Long articleId, MultipartFile file) {
@@ -131,22 +123,10 @@ public class ArticleService {
         }
         return infos;
     }
-/*
-    //인기게시물 조회
+  
     @Transactional(readOnly = true)
-    public List<ArticleInfo> getBestArticleList(Long userId, Pageable pageable) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않음"));
-
-        // 게시물 테이블에서 가장 좋아요 수가 많은 게시물들을 리턴한다
-        Sort sort = Sort.by(Sort.Direction.DESC, "likeCnt");
-        final List<ArticleEntity> articles = articleRepository.findAll(sort);
-        List<ArticleInfo> infos = new ArrayList<>();
-        for (ArticleEntity article : articles) {
-            ArticleInfo of = ArticleInfo.of(user, article);
-            infos.add(of);
-        }return infos;
-    }
-
- */
+    public Page<ArticlePreviewInfo> getHotArticleList(Pageable pageable) {
+        return articleRepository.findAll(pageable)
+                .map(ArticlePreviewInfo::of);
+    } 
 }

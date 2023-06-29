@@ -2,9 +2,11 @@ package com.hackathon.herb.controller;
 
 import com.hackathon.herb.dto.WeatherInfo;
 import com.hackathon.herb.dto.article.ArticleInfo;
+import com.hackathon.herb.dto.article.ArticlePreviewInfo;
 import com.hackathon.herb.parser.WeatherAPIParser;
 import com.hackathon.herb.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -25,21 +27,19 @@ public class HomeController {
     public WeatherInfo getWeatherInfo() {
         return weatherAPIParser.getCurrentWeather();
     }
-/*
-    //인기게시물 조회
-    @GetMapping("/article/bestList")
-    public List<ArticleInfo> getBestArticleList(Long userId, @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return articleService.getBestArticleList(userId, pageable);
-    }
-*/
-    @GetMapping("/article/list")
-    public List<ArticleInfo> getArticleList(Long userId, @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+  
+    @GetMapping("/article/list/{userId}")
+    public List<ArticleInfo> getFriendArticleList(@PathVariable("userId") Long userId, @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return articleService.getArticleList(userId, pageable);
     }
 
-    //게시글 조회
-    @GetMapping("/article/{id}")
-    public ResponseEntity<ArticleInfo> getArticle(@PathVariable("id") Long articleId) {
+    @GetMapping("/article/list")
+    public Page<ArticlePreviewInfo> getHotArticleList(@PageableDefault(size = 10, sort = "likeCnt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return articleService.getHotArticleList(pageable);
+    }
+
+    @GetMapping("/article/{articleId}")
+    public ResponseEntity<ArticleInfo> getArticle(@PathVariable("articleId") Long articleId) {
         return ResponseEntity.ok(articleService.getArticle(articleId));
     }
 }
