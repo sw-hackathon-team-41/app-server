@@ -25,12 +25,19 @@ public class HomeController {
     public WeatherInfo getWeatherInfo() {
         return weatherAPIParser.getCurrentWeather();
     }
-
+/*
+    //인기게시물 조회
+    @GetMapping("/article/bestList")
+    public List<ArticleInfo> getBestArticleList(Long userId, @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return articleService.getBestArticleList(userId, pageable);
+    }
+*/
     @GetMapping("/article/list")
     public List<ArticleInfo> getArticleList(Long userId, @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return articleService.getArticleList(userId, pageable);
     }
 
+    //게시글 조회
     @GetMapping("/article/{id}")
     public ResponseEntity<ArticleInfo> getArticle(@PathVariable("id") Long articleId) {
         return ResponseEntity.ok(articleService.getArticle(articleId));

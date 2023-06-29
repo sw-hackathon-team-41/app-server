@@ -10,6 +10,7 @@ import com.hackathon.herb.repository.ArticleRepository;
 import com.hackathon.herb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -128,7 +129,24 @@ public class ArticleService {
                 infos.add(of);
             }
         }
-
         return infos;
     }
+/*
+    //인기게시물 조회
+    @Transactional(readOnly = true)
+    public List<ArticleInfo> getBestArticleList(Long userId, Pageable pageable) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않음"));
+
+        // 게시물 테이블에서 가장 좋아요 수가 많은 게시물들을 리턴한다
+        Sort sort = Sort.by(Sort.Direction.DESC, "likeCnt");
+        final List<ArticleEntity> articles = articleRepository.findAll(sort);
+        List<ArticleInfo> infos = new ArrayList<>();
+        for (ArticleEntity article : articles) {
+            ArticleInfo of = ArticleInfo.of(user, article);
+            infos.add(of);
+        }return infos;
+    }
+
+ */
 }

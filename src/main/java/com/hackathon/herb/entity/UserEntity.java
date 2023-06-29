@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Builder
 @Getter @Setter
@@ -28,10 +29,22 @@ public class UserEntity {
     private long followingCnt; //팔로잉 수
     private long followerCnt; //팔로워 수
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(email, that.email) && Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, password);
+    }
 //    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
 //    private List<Herb> herbs;
 
-    @ManyToMany(mappedBy = "usersWhoLikeThis")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "usersWhoLikeThis")
     private List<ArticleEntity> articles;
 
 //    public void updateHerb(Herb herb) {
