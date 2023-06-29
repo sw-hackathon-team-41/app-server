@@ -3,14 +3,16 @@ package com.hackathon.herb.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
@@ -30,9 +32,16 @@ public class ArticleEntity {
     private Long writer; // 작성자
     private long likeCnt;  //좋아요 수
 
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "like_users")
-    private List<UserEntity> usersWhoLikeThis; //좋아요 누른 사람들
+    @Builder.Default
+    private List<UserEntity> usersWhoLikeThis = new ArrayList<>(); //좋아요 누른 사람들
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "writer_id")
+    private UserEntity userEntity;
 
     @CreatedDate
     private LocalDateTime createdAt; //작성 날짜
@@ -51,5 +60,9 @@ public class ArticleEntity {
 
     public void updateContent(String content) {
         this.content = content;
+    }
+
+    public void updateCreatedAt() {
+        this.createdAt = LocalDateTime.now();
     }
 }

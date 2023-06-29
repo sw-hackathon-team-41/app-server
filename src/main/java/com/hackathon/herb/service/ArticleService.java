@@ -8,6 +8,7 @@ import com.hackathon.herb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,16 +25,10 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     public Long createArticle(ArticleCreationDto.Req req) {
-        Long uId = req.getUserId();
-
-        if (!userRepository.existsById(uId)) {
-            throw new IllegalArgumentException("존재하지 않는 유저");
-        }
-
-        ArticleEntity entity = req.toEntity();
-        articleRepository.save(entity);
-
-        return 1L;
+        UserEntity user = userRepository.findById(req.getUserId()).orElseThrow(() -> new IllegalArgumentException("찾을 수 없는 유저"));
+        ArticleEntity article = req.toEntity();
+        user.updateArticle(article);
+        return articleRepository.save(article).getId();
     }
 
     public Long uploadImage(Long uId, Long articleId, MultipartFile file) {
@@ -126,13 +121,12 @@ public class ArticleService {
                 infos.add(of);
             }
         }
-
         return infos;
     }
-
+  
     @Transactional(readOnly = true)
     public Page<ArticlePreviewInfo> getHotArticleList(Pageable pageable) {
         return articleRepository.findAll(pageable)
                 .map(ArticlePreviewInfo::of);
-    }
+    } 
 }

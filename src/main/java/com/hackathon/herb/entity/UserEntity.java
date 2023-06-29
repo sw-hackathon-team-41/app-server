@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Builder
 @Getter @Setter
@@ -20,6 +21,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String password; // 패스워드.
     private String country; //위치정보(나라)
+
     @Builder.Default
     private List<Long> followings = new ArrayList<>();  // 팔로잉 목록
     @Builder.Default
@@ -27,14 +29,27 @@ public class UserEntity {
     private long followingCnt; //팔로잉 수
     private long followerCnt; //팔로워 수
 
-//    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
-//    private List<Herb> herbs;
+    @ManyToMany(mappedBy = "usersWhoLikeThis", fetch = FetchType.EAGER)
+    private List<ArticleEntity> likeArticles;
 
-    @ManyToMany(mappedBy = "usersWhoLikeThis")
+    @OneToMany(mappedBy = "userEntity")
     private List<ArticleEntity> articles;
 
-//    public void updateHerb(Herb herb) {
-//        this.herbs.add(herb);
-//        herb.setUserInfo(this);
-//    }
+    public void updateArticle(ArticleEntity article) {
+        this.articles.add(article);
+        article.setUserEntity(this);
+    }
+  
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(email, that.email) && Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, password);
+    }
 }
