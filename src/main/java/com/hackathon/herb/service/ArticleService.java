@@ -1,5 +1,6 @@
 package com.hackathon.herb.service;
 
+import com.hackathon.herb.dto.ArticleType;
 import com.hackathon.herb.dto.HerbType;
 import com.hackathon.herb.dto.article.*;
 import com.hackathon.herb.entity.ArticleEntity;
@@ -31,6 +32,7 @@ public class ArticleService {
         user.updateArticle(article);
         article.updateThumbnail(req.getFile());
         article.setWriterHerbType(Enum.valueOf(HerbType.class, req.getHerbType()));
+        article.setArticleType(Enum.valueOf(ArticleType.class, req.getArticleType()));
 
         return articleRepository.save(article).getId();
     }
@@ -116,7 +118,13 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public Page<ArticlePreviewInfo> getHotArticleList(Pageable pageable) {
-        return articleRepository.findAll(pageable)
+        return articleRepository.findAllByArticleType(ArticleType.NORMAL, pageable)
+                .map(ArticlePreviewInfo::of);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ArticlePreviewInfo> getQnaArticleList(Pageable pageable) {
+        return articleRepository.findAllByArticleType(ArticleType.QNA, pageable)
                 .map(ArticlePreviewInfo::of);
     }
 }

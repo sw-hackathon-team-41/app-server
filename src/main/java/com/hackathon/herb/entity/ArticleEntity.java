@@ -1,5 +1,6 @@
 package com.hackathon.herb.entity;
 
+import com.hackathon.herb.dto.ArticleType;
 import com.hackathon.herb.dto.HerbType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -44,6 +45,10 @@ public class ArticleEntity {
     @Setter
     @Enumerated(EnumType.STRING)
     private HerbType writerHerbType;
+
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private ArticleType articleType;
 
     public void updateThumbnail(MultipartFile file) {
         try {

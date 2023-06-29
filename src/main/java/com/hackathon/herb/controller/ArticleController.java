@@ -22,9 +22,10 @@ public class ArticleController {
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam("herbType") String herbType,
+            @RequestParam("articleType") String articleType,
             @RequestParam(value = "file", required = false) MultipartFile file
     ) {
-        ArticleCreationDto.Req req = new ArticleCreationDto.Req(userId, title, content, herbType, file);
+        ArticleCreationDto.Req req = new ArticleCreationDto.Req(userId, title, content, herbType, articleType, file);
         return ResponseEntity.ok(articleService.createArticle(req));
     }
 

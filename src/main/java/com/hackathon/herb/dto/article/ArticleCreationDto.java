@@ -14,6 +14,7 @@ public class ArticleCreationDto {
         private String title;
         private String content;
         private String herbType;
+        private String articleType;
         private MultipartFile file;
 
         public ArticleEntity toEntity(UserEntity user) {

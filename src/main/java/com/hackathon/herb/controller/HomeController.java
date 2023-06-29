@@ -42,4 +42,9 @@ public class HomeController {
     public ResponseEntity<ArticleInfo> getArticle(@PathVariable("articleId") Long articleId) {
         return ResponseEntity.ok(articleService.getArticle(articleId));
     }
+
+    @GetMapping("/article/list/qna")
+    public Page<ArticlePreviewInfo> getQnaArticleList(@PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return articleService.getQnaArticleList(pageable);
+    }
 }
