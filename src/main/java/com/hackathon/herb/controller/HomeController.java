@@ -27,7 +27,7 @@ public class HomeController {
     public WeatherInfo getWeatherInfo() {
         return weatherAPIParser.getCurrentWeather();
     }
-
+  
     @GetMapping("/article/list/{userId}")
     public List<ArticleInfo> getFriendArticleList(@PathVariable("userId") Long userId, @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return articleService.getArticleList(userId, pageable);

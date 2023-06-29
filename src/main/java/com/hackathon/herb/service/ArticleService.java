@@ -8,6 +8,7 @@ import com.hackathon.herb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -120,13 +121,12 @@ public class ArticleService {
                 infos.add(of);
             }
         }
-
         return infos;
     }
-
+  
     @Transactional(readOnly = true)
     public Page<ArticlePreviewInfo> getHotArticleList(Pageable pageable) {
         return articleRepository.findAll(pageable)
                 .map(ArticlePreviewInfo::of);
-    }
+    } 
 }
