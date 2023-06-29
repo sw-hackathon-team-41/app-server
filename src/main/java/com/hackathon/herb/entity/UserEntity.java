@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Builder
 @Getter @Setter
@@ -15,13 +16,16 @@ public class UserEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email; // 이메일(아이디 개념)
+
     @Column(nullable = false)
     private String password; // 패스워드.
     private String country; //위치정보(나라)
+
     @Builder.Default
     private List<Long> followings = new ArrayList<>();  // 팔로잉 목록
+
     @Builder.Default
     private List<Long> followers = new ArrayList<>();   // 팔로워 목록
     private long followingCnt; //팔로잉 수
@@ -36,5 +40,18 @@ public class UserEntity {
     public void updateArticle(ArticleEntity article) {
         this.articles.add(article);
         article.setWriter(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

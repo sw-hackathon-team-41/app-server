@@ -30,9 +30,10 @@ public class FollowController {
     //3. 팔로잉 하는지 확인
     @GetMapping("/{senderId}/isFollowing/{recipientId}")
     public ResponseEntity<?> isFollowing(@PathVariable Long senderId , @PathVariable Long recipientId){
-            boolean result = followService.isFollowing(senderId, recipientId);
-            return ResponseEntity.ok().body(result);
+        boolean result = followService.isFollowing(senderId, recipientId);
+        return ResponseEntity.ok().body(result);
     }
+
     /*
     //4. userId가 팔로우 관계 신청한/신청받은 계정 목록 조회 : 팔로잉 목록/ 팔로우 목록
     @GetMapping("/{userId}/{request}List")

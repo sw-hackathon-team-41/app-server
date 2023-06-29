@@ -28,6 +28,8 @@ public class ArticleEntity {
     @Column(length = 10000)
     private byte[] thumbnail; // 썸네일
     private String content; // 내용
+
+    @Setter
     private long likeCnt;  //좋아요 수
 
     @ManyToMany

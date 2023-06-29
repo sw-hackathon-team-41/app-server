@@ -43,4 +43,9 @@ public class ArticleController {
     public ResponseEntity<Long> updateArticleContent(@RequestBody ArticleUpdateDto.contentReq dto) {
         return ResponseEntity.ok(articleService.updateContent(dto));
     }
+
+    @PostMapping("/like")
+    public ResponseEntity<Long> toggleArticleLike(@RequestBody ArticleUpdateDto.likeReq dto) {
+        return ResponseEntity.ok(articleService.toggleArticleLike(dto));
+    }
 }

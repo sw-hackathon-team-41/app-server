@@ -127,4 +127,25 @@ public class ArticleService {
         return articleRepository.findAllByArticleType(ArticleType.QNA, pageable)
                 .map(ArticlePreviewInfo::of);
     }
+
+    public Long toggleArticleLike(ArticleUpdateDto.likeReq dto) {
+         Long userId = dto.getUserId();
+         Long articleId = dto.getArticleId();
+
+        ArticleEntity article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("toggleArticleLike() : 게시글을 찾을 수 없음"));
+
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("toggleArticleLike() : 유저를 찾을 수 없음"));
+
+        if (article.getUsersWhoLikeThis().contains(user)) {
+            article.setLikeCnt(article.getLikeCnt() - 1);
+            article.getUsersWhoLikeThis().remove(user);
+        } else {
+            article.getUsersWhoLikeThis().add(user);
+            article.setLikeCnt(article.getLikeCnt() + 1);
+        }
+
+        return articleRepository.save(article).getLikeCnt();
+    }
 }
