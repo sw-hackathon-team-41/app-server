@@ -27,7 +27,24 @@ public class HomeController {
     public WeatherInfo getWeatherInfo() {
         return weatherAPIParser.getCurrentWeather();
     }
-  
+
+    @GetMapping("/videoType")
+    public long getVideoType() {
+        WeatherInfo weatherInfo = weatherAPIParser.getCurrentWeather();
+        float temperature = weatherInfo.getTemperature();
+        float humidity = weatherInfo.getHumidity();
+        float uv = weatherInfo.getUv();
+
+        if (temperature>=20) {weatherInfo.setVideoType(1);}
+        else if(temperature>=10) {weatherInfo.setVideoType(2);}
+        else weatherInfo.setVideoType(5);
+
+        if (humidity>=23) {weatherInfo.setVideoType(3);}
+        if (uv>=6) {weatherInfo.setVideoType(4);}
+
+        return weatherInfo.getVideoType();
+    }
+
     @GetMapping("/article/list/{userId}")
     public List<ArticleInfo> getFriendArticleList(@PathVariable("userId") Long userId, @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return articleService.getArticleList(userId, pageable);
