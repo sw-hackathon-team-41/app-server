@@ -27,13 +27,13 @@ public class HomeController {
         return weatherAPIParser.getCurrentWeather();
     }
 
-    @GetMapping("/article/list")
-    public List<ArticleInfo> getFriendArticleList(@RequestBody Long userId, @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    @GetMapping("/article/list/{userId}")
+    public List<ArticleInfo> getFriendArticleList(@PathVariable("userId") Long userId, @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return articleService.getArticleList(userId, pageable);
     }
 
-    @GetMapping("/article/{id}")
-    public ResponseEntity<ArticleInfo> getArticle(@PathVariable("id") Long articleId) {
+    @GetMapping("/article/{articleId}")
+    public ResponseEntity<ArticleInfo> getArticle(@PathVariable("articleId") Long articleId) {
         return ResponseEntity.ok(articleService.getArticle(articleId));
     }
 }
