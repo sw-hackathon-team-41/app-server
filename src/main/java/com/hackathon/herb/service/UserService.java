@@ -1,9 +1,7 @@
 package com.hackathon.herb.service;
 
-import com.hackathon.herb.dto.user.HerbPair;
 import com.hackathon.herb.dto.user.UserSignInDto;
 import com.hackathon.herb.dto.user.UserSignUpDto;
-import com.hackathon.herb.entity.Herb;
 import com.hackathon.herb.entity.UserEntity;
 import com.hackathon.herb.repository.HerbRepository;
 import com.hackathon.herb.repository.UserRepository;

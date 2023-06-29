@@ -20,6 +20,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String password; // 패스워드.
     private String country; //위치정보(나라)
+
     @Builder.Default
     private List<Long> followings = new ArrayList<>();  // 팔로잉 목록
     @Builder.Default
