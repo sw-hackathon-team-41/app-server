@@ -10,7 +10,7 @@ COPY build.gradle $APP_HOME
 COPY settings.gradle $APP_HOME
 
 RUN chmod +x ./gradlew
-RUN ./gradlew clean bootjar
+RUN ./gradlew clean build
 
 FROM openjdk:17-alpine
 
@@ -20,5 +20,5 @@ WORKDIR $APP_HOME
 ARG JAR_FILE_PATH=./build/libs/*.jar
 COPY --from=builder $APP_HOME/${JAR_FILE_PATH} app.jar
 
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -50,10 +50,12 @@ public class ArticleEntity {
 
     @Setter
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private HerbType writerHerbType;
 
     @Setter
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ArticleType articleType;
 
     public void updateThumbnail(MultipartFile file) {
