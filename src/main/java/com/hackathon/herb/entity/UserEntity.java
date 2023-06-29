@@ -30,11 +30,11 @@ public class UserEntity {
     @ManyToMany(mappedBy = "usersWhoLikeThis")
     private List<ArticleEntity> likeArticles;
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "writer")
     private List<ArticleEntity> articles;
 
     public void updateArticle(ArticleEntity article) {
         this.articles.add(article);
-        article.setUserEntity(this);
+        article.setWriter(this);
     }
 }

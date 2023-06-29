@@ -1,6 +1,7 @@
 package com.hackathon.herb.dto.article;
 
 import com.hackathon.herb.entity.ArticleEntity;
+import com.hackathon.herb.entity.UserEntity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,17 +13,18 @@ public class ArticleCreationDto {
         private Long userId;
         private String title;
         private String content;
-        private MultipartFile photo;
+        private String herbType;
+        private MultipartFile file;
 
-        public ArticleEntity toEntity() {
-            ArticleEntity entity =  ArticleEntity.builder()
+        public ArticleEntity toEntity(UserEntity user) {
+            ArticleEntity entity = ArticleEntity.builder()
                     .title(title)
                     .content(content)
-                    .writer(userId)
+                    .writer(user)
                     .likeCnt(0)
                     .build();
 
-            if (this.photo != null) entity.updateThumbnail(photo);
+            if (this.file != null) entity.updateThumbnail(file);
             if (entity.getCreatedAt() == null) entity.updateCreatedAt();
 
             return entity;
