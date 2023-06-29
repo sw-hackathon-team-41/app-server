@@ -19,7 +19,7 @@ public class ArticleCreationDto {
                     .title(title)
                     .content(content)
                     .writer(userId)
-                    .likes(0)
+                    .likeCnt(0)
                     .build();
 
             if (this.photo != null) entity.updateThumbnail(photo);

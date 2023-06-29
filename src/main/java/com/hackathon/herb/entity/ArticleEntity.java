@@ -25,7 +25,7 @@ public class ArticleEntity {
     private byte[] thumbnail; // 썸네일
     private String content; // 내용
 
-    private String writer; // 작성자
+    private Long writer; // 작성자
     private long likeCnt;  //좋아요 수
     private List<UserEntity> usersWhoLikeThis; //좋아요 누른 사람들
 

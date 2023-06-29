@@ -22,8 +22,8 @@ public class FollowService {
         UserEntity savedSender = userRepository.findByEmail(senderEmail).orElseThrow();
         UserEntity savedRecipient = userRepository.findByEmail(recipientEmail).orElseThrow();
         //2.이미 팔로우한 상태인지 확인(팔로우 목록 확인)
-        List<String> followingList = savedSender.getFollowings();
-        for(String f : followingList) {if(f.equals(savedRecipient.getEmail())) return true;}
+        List<Long> followingList = savedSender.getFollowings();
+        for(Long f : followingList) {if(f.equals(savedRecipient.getEmail())) return true;}
         return false;
     }
 
