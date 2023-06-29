@@ -46,6 +46,7 @@ public class ArticleEntity {
 
     @Setter
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private HerbType writerHerbType;
 
     @Setter
