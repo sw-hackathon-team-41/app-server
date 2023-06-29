@@ -27,6 +27,9 @@ public class ArticleEntity {
 
     private Long writer; // 작성자
     private long likeCnt;  //좋아요 수
+
+    @ManyToMany
+    @JoinColumn(name = "like_users")
     private List<UserEntity> usersWhoLikeThis; //좋아요 누른 사람들
 
     @CreatedDate
