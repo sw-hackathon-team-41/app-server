@@ -1,5 +1,6 @@
 package com.hackathon.herb.repository;
 
+import com.fasterxml.jackson.annotation.OptBoolean;
 import com.hackathon.herb.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
