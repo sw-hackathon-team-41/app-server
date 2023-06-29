@@ -1,5 +1,6 @@
 package com.hackathon.herb.entity;
 
+import com.hackathon.herb.dto.ArticleType;
 import com.hackathon.herb.dto.HerbType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,8 @@ public class ArticleEntity {
     @Column(length = 10000)
     private byte[] thumbnail; // 썸네일
     private String content; // 내용
+
+    @Setter
     private long likeCnt;  //좋아요 수
     private String type; //게시물 분류 (일반 / 질의응답)
 
@@ -48,6 +51,10 @@ public class ArticleEntity {
     @Setter
     @Enumerated(EnumType.STRING)
     private HerbType writerHerbType;
+
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private ArticleType articleType;
 
     public void updateThumbnail(MultipartFile file) {
         try {

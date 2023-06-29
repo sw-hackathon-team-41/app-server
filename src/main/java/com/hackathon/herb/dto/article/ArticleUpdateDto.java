@@ -23,4 +23,12 @@ public class ArticleUpdateDto {
         private Long articleId;
         private String content;
     }
+
+    @Getter @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class likeReq {
+        private Long userId;
+        private Long articleId;
+    }
 }

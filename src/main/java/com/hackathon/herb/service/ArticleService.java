@@ -1,5 +1,6 @@
 package com.hackathon.herb.service;
 
+import com.hackathon.herb.dto.ArticleType;
 import com.hackathon.herb.dto.HerbType;
 import com.hackathon.herb.dto.article.*;
 import com.hackathon.herb.entity.ArticleEntity;
@@ -9,7 +10,6 @@ import com.hackathon.herb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +32,7 @@ public class ArticleService {
         user.updateArticle(article);
         article.updateThumbnail(req.getFile());
         article.setWriterHerbType(Enum.valueOf(HerbType.class, req.getHerbType()));
+        article.setArticleType(Enum.valueOf(ArticleType.class, req.getArticleType()));
 
         return articleRepository.save(article).getId();
     }
@@ -92,7 +93,6 @@ public class ArticleService {
         return ArticleInfo.of(writer, article);
     }
 
-    //팔로우한 사람들 글 목록
     @Transactional(readOnly = true)
     public List<ArticleInfo> getArticleList(Long userId, Pageable pageable) {
         UserEntity user = userRepository.findById(userId)
@@ -112,13 +112,40 @@ public class ArticleService {
                 infos.add(of);
             }
         }
+
         return infos;
     }
 
-    //인기글 목록
     @Transactional(readOnly = true)
     public Page<ArticlePreviewInfo> getHotArticleList(Pageable pageable) {
-        return articleRepository.findAll(pageable)
+        return articleRepository.findAllByArticleType(ArticleType.NORMAL, pageable)
                 .map(ArticlePreviewInfo::of);
-    } 
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ArticlePreviewInfo> getQnaArticleList(Pageable pageable) {
+        return articleRepository.findAllByArticleType(ArticleType.QNA, pageable)
+                .map(ArticlePreviewInfo::of);
+    }
+
+    public Long toggleArticleLike(ArticleUpdateDto.likeReq dto) {
+         Long userId = dto.getUserId();
+         Long articleId = dto.getArticleId();
+
+        ArticleEntity article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("toggleArticleLike() : 게시글을 찾을 수 없음"));
+
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("toggleArticleLike() : 유저를 찾을 수 없음"));
+
+        if (article.getUsersWhoLikeThis().contains(user)) {
+            article.setLikeCnt(article.getLikeCnt() - 1);
+            article.getUsersWhoLikeThis().remove(user);
+        } else {
+            article.getUsersWhoLikeThis().add(user);
+            article.setLikeCnt(article.getLikeCnt() + 1);
+        }
+
+        return articleRepository.save(article).getLikeCnt();
+    }
 }
