@@ -14,6 +14,6 @@ public class UserSignUpDto {
         private String email;
         private String password;
         private String country;
-        private List<HerbPair> herbs;
+        //private List<HerbPair> herbs;
     }
 }

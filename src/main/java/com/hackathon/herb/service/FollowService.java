@@ -24,8 +24,11 @@ public class FollowService {
         UserEntity savedRecipient = userRepository.findById(recipientId).orElseThrow();
         //2.이미 팔로우한 상태인지 확인(팔로우 목록 확인)
         List<Long> followingList = savedSender.getFollowings();
-        for(Long f : followingList) {if(f.equals(savedRecipient.getId())) return true;}
-        return false;
+        if(!followingList.isEmpty()) {
+            for (Long f : followingList) {
+                if (f.equals(savedRecipient.getId())) return true;
+            } return false;
+        } return false;
     }
 
     //팔로우

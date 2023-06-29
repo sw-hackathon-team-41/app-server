@@ -26,15 +26,14 @@ public class UserEntity {
     private long followingCnt; //팔로잉 수
     private long followerCnt; //팔로워 수
 
-
-    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
-    private List<Herb> herbs;
+//    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
+//    private List<Herb> herbs;
 
     @ManyToMany(mappedBy = "usersWhoLikeThis")
     private List<ArticleEntity> articles;
 
-    public void updateHerb(Herb herb) {
-        this.herbs.add(herb);
-        herb.setUserInfo(this);
-    }
+//    public void updateHerb(Herb herb) {
+//        this.herbs.add(herb);
+//        herb.setUserInfo(this);
+//    }
 }

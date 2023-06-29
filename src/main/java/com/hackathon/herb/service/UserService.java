@@ -27,11 +27,11 @@ public class UserService {
                 .build()
         );
 
-        for (HerbPair pair : dto.getHerbs()) {
-            Herb herb = pair.toEntity(user);
-            user.updateHerb(herb);
-            herbRepository.save(herb);
-        }
+//        for (HerbPair pair : dto.getHerbs()) {
+//            Herb herb = pair.toEntity(user);
+//            user.updateHerb(herb);
+//            herbRepository.save(herb);
+//        }
 
         return 1L;
     }
