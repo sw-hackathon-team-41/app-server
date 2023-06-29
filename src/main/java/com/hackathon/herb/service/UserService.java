@@ -23,15 +23,14 @@ public class UserService {
                 .build()
         );
 
-        userRepository.saveAndFlush(user);
-
-        return 1L;
+        UserEntity userEntity = userRepository.saveAndFlush(user);
+        return userEntity.getId();
     }
 
     public Long signIn(UserSignInDto.Req dto) {
-         userRepository.findByEmailAndPassword(dto.getEmail(), dto.getPassword())
+        UserEntity userEntity = userRepository.findByEmailAndPassword(dto.getEmail(), dto.getPassword())
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없음"));
 
-         return 1L;
+        return userEntity.getId();
     }
 }
