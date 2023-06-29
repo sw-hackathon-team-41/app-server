@@ -23,7 +23,7 @@ public class ArticleEntity {
     private String title; // 제목
 
     @Lob
-    @Column(length=10000)
+    @Column(length = 10000)
     private byte[] thumbnail; // 썸네일
     private String content; // 내용
 

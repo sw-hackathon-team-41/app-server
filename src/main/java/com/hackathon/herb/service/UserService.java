@@ -3,7 +3,6 @@ package com.hackathon.herb.service;
 import com.hackathon.herb.dto.user.UserSignInDto;
 import com.hackathon.herb.dto.user.UserSignUpDto;
 import com.hackathon.herb.entity.UserEntity;
-import com.hackathon.herb.repository.HerbRepository;
 import com.hackathon.herb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
-    private final HerbRepository herbRepository;
 
     public Long signUp(UserSignUpDto.Req dto) {
         UserEntity user = userRepository.saveAndFlush(
@@ -25,11 +23,7 @@ public class UserService {
                 .build()
         );
 
-//        for (HerbPair pair : dto.getHerbs()) {
-//            Herb herb = pair.toEntity(user);
-//            user.updateHerb(herb);
-//            herbRepository.save(herb);
-//        }
+        userRepository.saveAndFlush(user);
 
         return 1L;
     }
