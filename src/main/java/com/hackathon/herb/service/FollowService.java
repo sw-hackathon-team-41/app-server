@@ -15,6 +15,7 @@ import java.util.Optional;
 public class FollowService {
     @Autowired
     private UserRepository userRepository;
+    /*
 
     //팔로우 여부 확인
     public boolean isFollowing(String senderEmail, String recipientEmail){
@@ -52,4 +53,5 @@ public class FollowService {
         savedRecipient.getFollowers().remove(savedSender.getId()); //팔로워 목록 업데이트
         userRepository.save(savedRecipient); userRepository.save(savedSender);
     }
+    */
 }
