@@ -34,6 +34,11 @@ public class ArticleEntity {
     @JoinColumn(name = "like_users")
     private List<UserEntity> usersWhoLikeThis; //좋아요 누른 사람들
 
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "writer_id")
+    private UserEntity userEntity;
+
     @CreatedDate
     private LocalDateTime createdAt; //작성 날짜
 
@@ -51,5 +56,9 @@ public class ArticleEntity {
 
     public void updateContent(String content) {
         this.content = content;
+    }
+
+    public void updateCreatedAt() {
+        this.createdAt = LocalDateTime.now();
     }
 }

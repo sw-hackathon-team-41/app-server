@@ -24,16 +24,10 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     public Long createArticle(ArticleCreationDto.Req req) {
-        Long uId = req.getUserId();
-
-        if (!userRepository.existsById(uId)) {
-            throw new IllegalArgumentException("존재하지 않는 유저");
-        }
-
-        ArticleEntity entity = req.toEntity();
-        articleRepository.save(entity);
-
-        return 1L;
+        UserEntity user = userRepository.findById(req.getUserId()).orElseThrow(() -> new IllegalArgumentException("찾을 수 없는 유저"));
+        ArticleEntity article = req.toEntity();
+        user.updateArticle(article);
+        return articleRepository.save(article).getId();
     }
 
     public Long uploadImage(Long uId, Long articleId, MultipartFile file) {
