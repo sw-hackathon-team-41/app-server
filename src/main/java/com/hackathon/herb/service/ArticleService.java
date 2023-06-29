@@ -102,6 +102,7 @@ public class ArticleService {
         return ArticleInfo.of(writer, article);
     }
 
+    //팔로우한 사람들 글 목록
     @Transactional(readOnly = true)
     public List<ArticleInfo> getArticleList(Long userId, Pageable pageable) {
         UserEntity user = userRepository.findById(userId)
@@ -123,7 +124,8 @@ public class ArticleService {
         }
         return infos;
     }
-  
+
+    //인기글 목록
     @Transactional(readOnly = true)
     public Page<ArticlePreviewInfo> getHotArticleList(Pageable pageable) {
         return articleRepository.findAll(pageable)

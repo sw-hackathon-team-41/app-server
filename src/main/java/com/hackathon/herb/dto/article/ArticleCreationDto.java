@@ -13,9 +13,11 @@ public class ArticleCreationDto {
         private String title;
         private String content;
         private MultipartFile photo;
+        private String type;
 
         public ArticleEntity toEntity() {
             ArticleEntity entity =  ArticleEntity.builder()
+                    .type(type)
                     .title(title)
                     .content(content)
                     .writer(userId)

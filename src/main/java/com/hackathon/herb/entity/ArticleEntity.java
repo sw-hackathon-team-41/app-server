@@ -31,7 +31,7 @@ public class ArticleEntity {
 
     private Long writer; // 작성자
     private long likeCnt;  //좋아요 수
-
+    private String type; //게시물 분류 (일반 / 질의응답)
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "like_users")
