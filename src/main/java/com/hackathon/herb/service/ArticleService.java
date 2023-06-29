@@ -1,14 +1,12 @@
 package com.hackathon.herb.service;
 
-import com.hackathon.herb.dto.article.ArticleCreationDto;
-import com.hackathon.herb.dto.article.ArticleDeletionDto;
-import com.hackathon.herb.dto.article.ArticleInfo;
-import com.hackathon.herb.dto.article.ArticleUpdateDto;
+import com.hackathon.herb.dto.article.*;
 import com.hackathon.herb.entity.ArticleEntity;
 import com.hackathon.herb.entity.UserEntity;
 import com.hackathon.herb.repository.ArticleRepository;
 import com.hackathon.herb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -130,5 +128,11 @@ public class ArticleService {
         }
 
         return infos;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ArticlePreviewInfo> getHotArticleList(Pageable pageable) {
+        return articleRepository.findAll(pageable)
+                .map(ArticlePreviewInfo::of);
     }
 }
