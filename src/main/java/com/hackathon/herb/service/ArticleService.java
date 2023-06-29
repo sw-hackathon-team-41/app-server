@@ -2,6 +2,7 @@ package com.hackathon.herb.service;
 
 import com.hackathon.herb.dto.article.ArticleCreationDto;
 import com.hackathon.herb.dto.article.ArticleDeletionDto;
+import com.hackathon.herb.dto.article.ArticleInfo;
 import com.hackathon.herb.dto.article.ArticleUpdateDto;
 import com.hackathon.herb.entity.ArticleEntity;
 import com.hackathon.herb.entity.UserEntity;
@@ -92,5 +93,16 @@ public class ArticleService {
 
         article.updateContent(dto.getContent());
         return 1L;
+    }
+
+    @Transactional(readOnly = true)
+    public ArticleInfo getArticle(Long articleId) {
+        ArticleEntity article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않음"));
+
+        UserEntity writer = userRepository.findById(article.getWriter())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않음"));
+
+        return ArticleInfo.of(writer, article);
     }
 }
