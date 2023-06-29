@@ -1,38 +1,50 @@
 package com.hackathon.herb.entity;
 
 import jakarta.persistence.*;
-import jdk.jfr.Relational;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
-import com.hackathon.herb.entity.UserEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Getter @Setter
-@Data
 @Entity
 @Table(name = "Articles")
 public class ArticleEntity {
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    private long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String title; // 제목
-    @Column(nullable = false)
-    private byte[] thumbnail; // 썸네일
 
+    private byte[] thumbnail; // 썸네일
     private String content; // 내용
+
     private String writer; // 작성자
     private long likeCnt;  //좋아요 수
     private List<UserEntity> usersWhoLikeThis; //좋아요 누른 사람들
 
     @CreatedDate
-    private LocalDateTime createdDt; //작성 날짜
+    private LocalDateTime createdAt; //작성 날짜
+
+    public void updateThumbnail(MultipartFile file) {
+        try {
+            this.thumbnail = file.getBytes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }
