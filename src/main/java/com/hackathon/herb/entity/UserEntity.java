@@ -32,12 +32,12 @@ public class UserEntity {
     @ManyToMany(mappedBy = "usersWhoLikeThis", fetch = FetchType.EAGER)
     private List<ArticleEntity> likeArticles;
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "writer")
     private List<ArticleEntity> articles;
 
     public void updateArticle(ArticleEntity article) {
         this.articles.add(article);
-        article.setUserEntity(this);
+        article.setWriter(this);
     }
   
     @Override
@@ -52,4 +52,5 @@ public class UserEntity {
     public int hashCode() {
         return Objects.hash(email, password);
     }
+
 }

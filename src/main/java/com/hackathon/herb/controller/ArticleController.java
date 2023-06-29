@@ -19,17 +19,15 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping
-    public ResponseEntity<Long> createArticle(@RequestBody ArticleCreationDto.Req req) {
-        return ResponseEntity.ok(articleService.createArticle(req));
-    }
-
-    @PostMapping("/image-upload")
-    public ResponseEntity<Long> uploadImage(
-            @RequestParam(value = "thumbnail", required = false) MultipartFile file,
+    public ResponseEntity<Long> createArticle(
             @RequestParam("userId") Long userId,
-            @RequestParam("articleId") Long articleId
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam("herbType") String herbType,
+            @RequestParam(value = "file", required = false) MultipartFile file
     ) {
-        return ResponseEntity.ok(articleService.uploadImage(userId, articleId, file));
+        ArticleCreationDto.Req req = new ArticleCreationDto.Req(userId, title, content, herbType, file);
+        return ResponseEntity.ok(articleService.createArticle(req));
     }
 
     @DeleteMapping

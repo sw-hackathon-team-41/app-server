@@ -1,5 +1,6 @@
 package com.hackathon.herb.service;
 
+import com.hackathon.herb.dto.HerbType;
 import com.hackathon.herb.dto.article.*;
 import com.hackathon.herb.entity.ArticleEntity;
 import com.hackathon.herb.entity.UserEntity;
@@ -11,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,25 +25,15 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     public Long createArticle(ArticleCreationDto.Req req) {
-        UserEntity user = userRepository.findById(req.getUserId()).orElseThrow(() -> new IllegalArgumentException("찾을 수 없는 유저"));
-        ArticleEntity article = req.toEntity();
+        UserEntity user = userRepository.findById(req.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("찾을 수 없는 유저"));
+
+        ArticleEntity article = req.toEntity(user);
         user.updateArticle(article);
+        article.updateThumbnail(req.getFile());
+        article.setWriterHerbType(Enum.valueOf(HerbType.class, req.getHerbType()));
+
         return articleRepository.save(article).getId();
-    }
-
-    public Long uploadImage(Long uId, Long articleId, MultipartFile file) {
-        UserEntity user = userRepository.findById(uId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
-
-        ArticleEntity article = articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글"));
-
-        if (!Objects.equals(article.getWriter(), user.getId())) {
-            return 0L;
-        }
-
-        article.updateThumbnail(file);
-        return 1L;
     }
 
     public Long deleteArticle(ArticleDeletionDto.Req dto) {
@@ -53,7 +43,7 @@ public class ArticleService {
         ArticleEntity article = articleRepository.findById(dto.getArticleId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글"));
 
-        if (!Objects.equals(user.getId(), article.getWriter())) {
+        if (!Objects.equals(user.getId(), article.getWriter().getId())) {
             return 0L;
         }
 
@@ -68,7 +58,7 @@ public class ArticleService {
         ArticleEntity article = articleRepository.findById(dto.getArticleId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글"));
 
-        if (!Objects.equals(user.getId(), article.getWriter())) {
+        if (!Objects.equals(user.getId(), article.getWriter().getId())) {
             return 0L;
         }
 
@@ -83,7 +73,7 @@ public class ArticleService {
         ArticleEntity article = articleRepository.findById(dto.getArticleId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글"));
 
-        if (!Objects.equals(user.getId(), article.getWriter())) {
+        if (!Objects.equals(user.getId(), article.getWriter().getId())) {
             return 0L;
         }
 
@@ -96,7 +86,7 @@ public class ArticleService {
         ArticleEntity article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않음"));
 
-        UserEntity writer = userRepository.findById(article.getWriter())
+        UserEntity writer = userRepository.findById(article.getWriter().getId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않음"));
 
         return ArticleInfo.of(writer, article);

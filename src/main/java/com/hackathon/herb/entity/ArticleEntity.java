@@ -1,5 +1,6 @@
 package com.hackathon.herb.entity;
 
+import com.hackathon.herb.dto.HerbType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,8 +29,6 @@ public class ArticleEntity {
     @Column(length = 10000)
     private byte[] thumbnail; // 썸네일
     private String content; // 내용
-
-    private Long writer; // 작성자
     private long likeCnt;  //좋아요 수
     private String type; //게시물 분류 (일반 / 질의응답)
 
@@ -41,14 +40,18 @@ public class ArticleEntity {
     @Setter
     @ManyToOne
     @JoinColumn(name = "writer_id")
-    private UserEntity userEntity;
+    private UserEntity writer;
 
     @CreatedDate
     private LocalDateTime createdAt; //작성 날짜
 
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private HerbType writerHerbType;
+
     public void updateThumbnail(MultipartFile file) {
         try {
-            this.thumbnail = file.getBytes();
+            if (file != null) this.thumbnail = file.getBytes();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -9,7 +9,7 @@ services:
       dockerfile: Dockerfile
 
     ports:
-      - "8080:8080"
+      - "80:80"
 
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/tea
