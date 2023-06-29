@@ -10,7 +10,7 @@ COPY build.gradle $APP_HOME
 COPY settings.gradle $APP_HOME
 
 RUN chmod +x ./gradlew
-RUN ./gradlew clean bootjar
+RUN ./gradlew clean build
 
 FROM openjdk:17-alpine
 
