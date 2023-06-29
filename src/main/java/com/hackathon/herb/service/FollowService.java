@@ -23,7 +23,7 @@ public class FollowService {
         UserEntity savedRecipient = userRepository.findByEmail(recipientEmail).orElseThrow();
         //2.이미 팔로우한 상태인지 확인(팔로우 목록 확인)
         List<Long> followingList = savedSender.getFollowings();
-        for(Long f : followingList) {if(f.equals(savedRecipient.getEmail())) return true;}
+        for(Long f : followingList) {if(f.equals(savedRecipient.getId())) return true;}
         return false;
     }
 
@@ -35,8 +35,8 @@ public class FollowService {
         //2.이미 팔로우한 상태인지 확인(팔로우 목록 확인)
         if(isFollowing(senderEmail, recipientEmail)) throw new RuntimeException("already follow");
         //3. 검증이 끝나면 변경된 속성 db에 반영
-        savedSender.getFollowings().add(savedRecipient.getEmail());//팔로우 목록 업데이트
-        savedRecipient.getFollowers().add(savedSender.getEmail()); //팔로워 목록 업데이트
+        savedSender.getFollowings().add(savedRecipient.getId());//팔로우 목록 업데이트
+        savedRecipient.getFollowers().add(savedSender.getId()); //팔로워 목록 업데이트
         userRepository.save(savedRecipient); userRepository.save(savedSender);
         }
 
@@ -48,8 +48,8 @@ public class FollowService {
         //2.이미 언팔로우한 상태인지 확인(팔로우 목록 확인)
         if(!isFollowing(senderEmail, recipientEmail)) throw new RuntimeException("already unfollow");
         //3. 검증이 끝나면 변경된 속성 db에 반영
-        savedSender.getFollowings().remove(savedRecipient.getEmail());//팔로우 목록 업데이트
-        savedRecipient.getFollowers().remove(savedSender.getEmail()); //팔로워 목록 업데이트
+        savedSender.getFollowings().remove(savedRecipient.getId());//팔로우 목록 업데이트
+        savedRecipient.getFollowers().remove(savedSender.getId()); //팔로워 목록 업데이트
         userRepository.save(savedRecipient); userRepository.save(savedSender);
     }
 }
