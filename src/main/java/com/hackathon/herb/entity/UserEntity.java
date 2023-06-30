@@ -28,6 +28,7 @@ public class UserEntity {
 
     @Builder.Default
     private List<Long> followers = new ArrayList<>();   // 팔로워 목록
+
     private long followingCnt; //팔로잉 수
     private long followerCnt; //팔로워 수
 

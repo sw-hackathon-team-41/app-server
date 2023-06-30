@@ -12,9 +12,6 @@ public class FollowController {
     @Autowired
     private FollowService followService;
 
-    @GetMapping("")
-    public String test() { return "server ok";  }
-
     //1. 팔로우
     @PostMapping("{senderId}/follow/{recipientId}")
     public ResponseEntity<?> follow(@PathVariable Long senderId, @PathVariable Long recipientId) {
@@ -35,15 +32,5 @@ public class FollowController {
         boolean result = followService.isFollowing(senderId, recipientId);
         return ResponseEntity.ok().body(result);
     }
-
-    /*
-    //4. userId가 팔로우 관계 신청한/신청받은 계정 목록 조회 : 팔로잉 목록/ 팔로우 목록
-    @GetMapping("/{userId}/{request}List")
-    public ResponseEntity<?> findFollowing(@PathVariable Long userId, @PathVariable String request){
-        List<UserEntity> followingList = followService.findFollowing(request, accountId);
-        ResponseDTO response = ResponseDTO.<UserEntity>builder().data(FollowingList).build();
-        return ResponseEntity.ok().body( response);
-    }
-     */
 }
 

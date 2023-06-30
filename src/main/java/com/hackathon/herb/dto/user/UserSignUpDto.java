@@ -2,7 +2,6 @@ package com.hackathon.herb.dto.user;
 
 import lombok.*;
 
-import java.util.List;
 
 public class UserSignUpDto {
     @Getter @Setter @ToString
@@ -12,6 +11,5 @@ public class UserSignUpDto {
         private String email;
         private String password;
         private String country;
-        //private List<HerbPair> herbs;
     }
 }

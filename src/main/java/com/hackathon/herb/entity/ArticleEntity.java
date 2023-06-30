@@ -29,6 +29,7 @@ public class ArticleEntity {
     @Lob
     @Column(length = 10000)
     private byte[] thumbnail; // 썸네일
+
     private String content; // 내용
 
     @Setter
