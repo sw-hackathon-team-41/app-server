@@ -14,4 +14,5 @@ public class WeatherInfo {
     private float temperature;
     private float humidity;
     private float uv;
+    private long videoType;
 }
